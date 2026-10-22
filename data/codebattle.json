@@ -1,0 +1,583 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-blackdragon",
+      "username": "BLACKDRAGON",
+      "email": "blackdragon@codebattle.dev",
+      "name": "Grandmaster Administrator (BLACKDRAGON)",
+      "role": "admin",
+      "passwordHash": "$2b$10$yiUNzV263mau3fflIvr7I.LHjHV2WZbrnQz5/loWxw4csDbJv02oS",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    },
+    {
+      "id": "usr-player-01",
+      "username": "alex_coder",
+      "email": "alex@codebattle.dev",
+      "name": "Alex Chen",
+      "role": "player",
+      "passwordHash": "$2b$10$3r2G8VD.ZZB4yZdMrZE87u1o56KhT9hnkjpb8G3FHz5xEXD7/YP1m",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    },
+    {
+      "id": "usr-player-02",
+      "username": "sarah_dev",
+      "email": "sarah@codebattle.dev",
+      "name": "Sarah Miller",
+      "role": "player",
+      "passwordHash": "$2b$10$3r2G8VD.ZZB4yZdMrZE87u1o56KhT9hnkjpb8G3FHz5xEXD7/YP1m",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    },
+    {
+      "id": "usr-player-03",
+      "username": "dev_david",
+      "email": "david@codebattle.dev",
+      "name": "David Kim",
+      "role": "player",
+      "passwordHash": "$2b$10$3r2G8VD.ZZB4yZdMrZE87u1o56KhT9hnkjpb8G3FHz5xEXD7/YP1m",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    },
+    {
+      "id": "usr-player-04",
+      "username": "maya_hacks",
+      "email": "maya@codebattle.dev",
+      "name": "Maya Patel",
+      "role": "player",
+      "passwordHash": "$2b$10$3r2G8VD.ZZB4yZdMrZE87u1o56KhT9hnkjpb8G3FHz5xEXD7/YP1m",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    },
+    {
+      "id": "usr-player-05",
+      "username": "jordan_algo",
+      "email": "jordan@codebattle.dev",
+      "name": "Jordan Lee",
+      "role": "player",
+      "passwordHash": "$2b$10$3r2G8VD.ZZB4yZdMrZE87u1o56KhT9hnkjpb8G3FHz5xEXD7/YP1m",
+      "createdAt": "2026-10-22T04:17:02.871Z"
+    }
+  ],
+  "competition": {
+    "id": "comp-spring-2026",
+    "title": "Code Battle: Grand Arena Tournament",
+    "description": "Sequential competitive debugging championship managed by BLACKDRAGON. Each program is strictly timed by the administrator. When time expires, previous code is permanently locked and the arena advances to the next challenge!",
+    "status": "active",
+    "durationMinutes": 90,
+    "startTime": "2026-10-22T04:13:02.871Z",
+    "endTime": "2026-10-22T05:43:02.871Z",
+    "freezeMinutesBeforeEnd": 15,
+    "isFrozen": false,
+    "currentQuestionId": "q-02",
+    "currentQuestionIndex": 1,
+    "currentQuestionStartTime": "2026-10-22T04:18:53.630Z",
+    "currentQuestionDurationSeconds": 900,
+    "currentQuestionEndTime": "2026-10-22T04:33:53.630Z",
+    "autoAdvanceOnTimeOver": true,
+    "createdAt": "2026-10-22T04:13:02.871Z"
+  },
+  "questions": [
+    {
+      "id": "q-01",
+      "slug": "two-sum-array-bound",
+      "title": "Two Sum: Array Bounds & Duplicate Index Fix",
+      "difficulty": "Easy",
+      "category": "Arrays & Hashing",
+      "points": 100,
+      "timeLimitMs": 3000,
+      "allocatedTimeMinutes": 10,
+      "memoryLimitMb": 128,
+      "description": "Given an array of integers `nums` and an integer `target`, return the **0-based indices** of the two numbers such that they add up to `target`.\n\nEach input has exactly one solution, and you may not use the same element twice.\nInput format: First line contains integer `N`, second line contains `N` space-separated integers, third line contains integer `target`.\nOutput format: Print the two 0-based indices separated by a space in ascending order.\n\n### The Bug in Starter Code:\nThe provided starter code suffers from an off-by-one boundary error in the inner loop and accidentally compares the same index with itself. Fix the logic to return the correct indices.",
+      "inputFormat": "Line 1: N (array length)\nLine 2: N space-separated integers\nLine 3: target integer",
+      "outputFormat": "Two space-separated indices: i j (i < j)",
+      "constraints": [
+        "2 <= N <= 10^4",
+        "-10^9 <= nums[i] <= 10^9",
+        "-10^9 <= target <= 10^9",
+        "Only one valid answer exists."
+      ],
+      "status": "published",
+      "order": 1,
+      "starterCode": {
+        "python": "import sys\n\ndef solve():\n    input_data = sys.stdin.read().split()\n    if not input_data:\n        return\n    n = int(input_data[0])\n    nums = [int(x) for x in input_data[1:n+1]]\n    target = int(input_data[n+1])\n\n    # BUGGY IMPLEMENTATION: Has duplicate index bug & off-by-one\n    for i in range(n):\n        for j in range(0, n): # BUG: Starts from 0, can pick i == j\n            if nums[i] + nums[j] == target:\n                print(f\"{i} {j}\")\n                return\n\nif __name__ == '__main__':\n    solve()\n",
+        "c": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    long long *nums = (long long*)malloc(n * sizeof(long long));\n    for (int i = 0; i < n; i++) {\n        scanf(\"%lld\", &nums[i]);\n    }\n    long long target;\n    scanf(\"%lld\", &target);\n\n    // BUG: j loop includes i == j\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (nums[i] + nums[j] == target) {\n                printf(\"%d %d\\n\", i, j);\n                free(nums);\n                return 0;\n            }\n        }\n    }\n    free(nums);\n    return 0;\n}\n",
+        "cpp": "#include <iostream>\n#include <vector>\n\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<long long> nums(n);\n    for (int i = 0; i < n; i++) cin >> nums[i];\n    long long target;\n    cin >> target;\n\n    // BUG: j starts at 0 instead of i + 1\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (nums[i] + nums[j] == target) {\n                cout << i << \" \" << j << \"\\n\";\n                return 0;\n            }\n        }\n    }\n    return 0;\n}\n",
+        "java": "import java.util.*;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        long[] nums = new long[n];\n        for (int i = 0; i < n; i++) {\n            nums[i] = sc.nextLong();\n        }\n        long target = sc.nextLong();\n\n        // BUG: j should start at i + 1\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (nums[i] + nums[j] == target) {\n                    System.out.println(i + \" \" + j);\n                    return;\n                }\n            }\n        }\n    }\n}\n"
+      },
+      "solutionCode": {
+        "python": "import sys\n\ndef solve():\n    input_data = sys.stdin.read().split()\n    if not input_data:\n        return\n    n = int(input_data[0])\n    nums = [int(x) for x in input_data[1:n+1]]\n    target = int(input_data[n+1])\n\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            print(f\"{seen[complement]} {i}\")\n            return\n        seen[num] = i\n\nif __name__ == '__main__':\n    solve()\n"
+      },
+      "testCases": [
+        {
+          "id": "tc-01-1",
+          "input": "4\n2 7 11 15\n9",
+          "expectedOutput": "0 1",
+          "isPrivate": false,
+          "explanation": "nums[0] + nums[1] == 2 + 7 == 9. Indices are 0 1."
+        },
+        {
+          "id": "tc-01-2",
+          "input": "3\n3 2 4\n6",
+          "expectedOutput": "1 2",
+          "isPrivate": false,
+          "explanation": "nums[1] + nums[2] == 2 + 4 == 6. Indices are 1 2 (cannot use 0 twice)."
+        },
+        {
+          "id": "tc-01-3",
+          "input": "2\n3 3\n6",
+          "expectedOutput": "0 1",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-01-4",
+          "input": "5\n-3 4 3 90 2\n0",
+          "expectedOutput": "0 2",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-01-5",
+          "input": "6\n1000000000 5 10 20 500 1000000000\n2000000000",
+          "expectedOutput": "0 5",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    },
+    {
+      "id": "q-02",
+      "slug": "string-reverse-case-invert",
+      "title": "String Inversion with Case Flipping",
+      "difficulty": "Easy",
+      "category": "Strings",
+      "points": 100,
+      "timeLimitMs": 3000,
+      "allocatedTimeMinutes": 10,
+      "memoryLimitMb": 128,
+      "description": "Given a single line string `S`, reverse the entire string while **inverting the case** of every alphabetical character (lowercase becomes UPPERCASE, and UPPERCASE becomes lowercase). Non-alphabetical characters (digits, symbols, punctuation) remain unchanged.\n\nInput format: A single line string `S`.\nOutput format: The reversed string with inverted letter cases.\n\n### The Bug in Starter Code:\nThe starter code reverses the string but omits the case inversion for lowercase letters and crashes on spaces. Fix it so all tests pass.",
+      "inputFormat": "A single line string S",
+      "outputFormat": "Reversed string with inverted letter case",
+      "constraints": [
+        "1 <= |S| <= 10^5",
+        "S may contain letters, digits, punctuation, and spaces."
+      ],
+      "status": "published",
+      "order": 2,
+      "starterCode": {
+        "python": "import sys\n\ndef solve():\n    line = sys.stdin.read().rstrip('\\r\\n')\n    if not line:\n        return\n\n    # BUG: Just reverses without inverting case\n    result = line[::-1]\n    print(result)\n\nif __name__ == '__main__':\n    solve()\n",
+        "c": "#include <stdio.h>\n#include <string.h>\n#include <ctype.h>\n\nint main() {\n    char s[100005];\n    if (!fgets(s, sizeof(s), stdin)) return 0;\n    int len = strlen(s);\n    while (len > 0 && (s[len - 1] == '\\n' || s[len - 1] == '\\r')) {\n        s[--len] = '\\0';\n    }\n\n    // BUG: Only prints reversed without flipping case\n    for (int i = len - 1; i >= 0; i--) {\n        putchar(s[i]);\n    }\n    putchar('\\n');\n    return 0;\n}\n",
+        "cpp": "#include <iostream>\n#include <string>\n#include <algorithm>\n#include <cctype>\n\nusing namespace std;\n\nint main() {\n    string s;\n    if (!getline(cin, s)) return 0;\n\n    // BUG: Missing case swap\n    reverse(s.begin(), s.end());\n    cout << s << \"\\n\";\n    return 0;\n}\n",
+        "java": "import java.util.*;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextLine()) return;\n        String s = sc.nextLine();\n\n        // BUG: Only reverses\n        StringBuilder sb = new StringBuilder(s).reverse();\n        System.out.println(sb.toString());\n    }\n}\n"
+      },
+      "solutionCode": {
+        "python": "import sys\n\ndef solve():\n    line = sys.stdin.read().rstrip('\\r\\n')\n    if not line:\n        return\n    reversed_str = line[::-1]\n    print(reversed_str.swapcase())\n\nif __name__ == '__main__':\n    solve()\n"
+      },
+      "testCases": [
+        {
+          "id": "tc-02-1",
+          "input": "HelloWorld",
+          "expectedOutput": "DLROwOLLEh",
+          "isPrivate": false,
+          "explanation": "Reversed is \"dlroWolleH\", with inverted case is \"DLROwOLLEh\"."
+        },
+        {
+          "id": "tc-02-2",
+          "input": "CodeBattle 2026!",
+          "expectedOutput": "!6202 ELTTAbeDOc",
+          "isPrivate": false,
+          "explanation": "Reversed order, letters case swapped, spaces and numbers unchanged."
+        },
+        {
+          "id": "tc-02-3",
+          "input": "a",
+          "expectedOutput": "A",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-02-4",
+          "input": "AbCdEfG123",
+          "expectedOutput": "321gFeDcBa",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-02-5",
+          "input": "   Leading and Trailing Spaces   ",
+          "expectedOutput": "   SECAPs GNILIARt DNA GNIDAEl   ",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    },
+    {
+      "id": "q-03",
+      "slug": "binary-search-overflow-guard",
+      "title": "Binary Search: Midpoint Overflow & Loop Condition",
+      "difficulty": "Medium",
+      "category": "Binary Search",
+      "points": 200,
+      "timeLimitMs": 2500,
+      "allocatedTimeMinutes": 15,
+      "memoryLimitMb": 128,
+      "description": "Given a sorted array of `N` integers in non-decreasing order and a query value `X`, find the **first (leftmost) 0-based index** where `nums[i] >= X`.\nIf all elements are smaller than `X`, output `N`.\n\nInput format:\nLine 1: `N` (number of elements)\nLine 2: `N` space-separated sorted integers\nLine 3: `Q` (number of queries)\nLine 4: `Q` space-separated integers representing query values `X`\n\nOutput format:\nPrint `Q` space-separated indices.",
+      "inputFormat": "N\nN sorted integers\nQ\nQ query integers",
+      "outputFormat": "Q space-separated indices",
+      "constraints": [
+        "1 <= N <= 10^5",
+        "1 <= Q <= 10^5",
+        "-10^9 <= nums[i], X <= 10^9"
+      ],
+      "status": "published",
+      "order": 3,
+      "starterCode": {
+        "python": "import sys\n\ndef lower_bound(nums, x):\n    low = 0\n    high = len(nums) - 1\n    ans = len(nums)\n\n    while low < high: # BUG: misses low == high case\n        mid = (low + high) // 2\n        if nums[mid] >= x:\n            ans = mid\n            high = mid - 1\n        else:\n            low = mid + 1\n    return ans\n\ndef solve():\n    data = sys.stdin.read().split()\n    if not data:\n        return\n    n = int(data[0])\n    nums = [int(x) for x in data[1:n+1]]\n    q = int(data[n+1])\n    queries = [int(x) for x in data[n+2:n+2+q]]\n\n    results = [str(lower_bound(nums, q_val)) for q_val in queries]\n    print(\" \".join(results))\n\nif __name__ == '__main__':\n    solve()\n",
+        "c": "#include <stdio.h>\n#include <stdlib.h>\n\nint lower_bound(long long *nums, int n, long long x) {\n    int low = 0, high = n - 1;\n    int ans = n;\n    while (low < high) { // BUG: low <= high\n        int mid = (low + high) / 2;\n        if (nums[mid] >= x) {\n            ans = mid;\n            high = mid - 1;\n        } else {\n            low = mid + 1;\n        }\n    }\n    return ans;\n}\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    long long *nums = (long long*)malloc(n * sizeof(long long));\n    for (int i = 0; i < n; i++) scanf(\"%lld\", &nums[i]);\n    int q;\n    scanf(\"%d\", &q);\n    for (int i = 0; i < q; i++) {\n        long long x;\n        scanf(\"%lld\", &x);\n        printf(\"%d%c\", lower_bound(nums, n, x), (i == q - 1 ? '\\n' : ' '));\n    }\n    free(nums);\n    return 0;\n}\n",
+        "cpp": "#include <iostream>\n#include <vector>\n\nusing namespace std;\n\nint lower_bound_custom(const vector<long long>& nums, long long x) {\n    int low = 0, high = nums.size() - 1;\n    int ans = nums.size();\n    while (low < high) { // BUG: should be low <= high\n        int mid = low + (high - low) / 2;\n        if (nums[mid] >= x) {\n            ans = mid;\n            high = mid - 1;\n        } else {\n            low = mid + 1;\n        }\n    }\n    return ans;\n}\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<long long> nums(n);\n    for (int i = 0; i < n; i++) cin >> nums[i];\n    int q;\n    cin >> q;\n    for (int i = 0; i < q; i++) {\n        long long x;\n        cin >> x;\n        cout << lower_bound_custom(nums, x) << (i == q - 1 ? \"\" : \" \");\n    }\n    cout << \"\\n\";\n    return 0;\n}\n",
+        "java": "import java.util.*;\n\npublic class Solution {\n    static int lowerBound(long[] nums, long x) {\n        int low = 0, high = nums.length - 1;\n        int ans = nums.length;\n        while (low < high) { // BUG: should be low <= high\n            int mid = low + (high - low) / 2;\n            if (nums[mid] >= x) {\n                ans = mid;\n                high = mid - 1;\n            } else {\n                low = mid + 1;\n            }\n        }\n        return ans;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        long[] nums = new long[n];\n        for (int i = 0; i < n; i++) nums[i] = sc.nextLong();\n        int q = sc.nextInt();\n        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < q; i++) {\n            long x = sc.nextLong();\n            if (i > 0) sb.append(\" \");\n            sb.append(lowerBound(nums, x));\n        }\n        System.out.println(sb.toString());\n    }\n}\n"
+      },
+      "solutionCode": {
+        "python": "import sys\nimport bisect\n\ndef solve():\n    data = sys.stdin.read().split()\n    if not data:\n        return\n    n = int(data[0])\n    nums = [int(x) for x in data[1:n+1]]\n    q = int(data[n+1])\n    queries = [int(x) for x in data[n+2:n+2+q]]\n\n    results = [str(bisect.bisect_left(nums, x)) for x in queries]\n    print(\" \".join(results))\n\nif __name__ == '__main__':\n    solve()\n"
+      },
+      "testCases": [
+        {
+          "id": "tc-03-1",
+          "input": "5\n1 3 5 7 9\n3\n3 6 10",
+          "expectedOutput": "1 3 5",
+          "isPrivate": false,
+          "explanation": "3 is at index 1. First element >= 6 is 7 at index 3. 10 is greater than all, so output n=5."
+        },
+        {
+          "id": "tc-03-2",
+          "input": "4\n2 2 2 2\n2\n2 1",
+          "expectedOutput": "0 0",
+          "isPrivate": false,
+          "explanation": "Leftmost index >= 2 is 0. Leftmost index >= 1 is 0."
+        },
+        {
+          "id": "tc-03-3",
+          "input": "1\n100\n3\n50 100 150",
+          "expectedOutput": "0 0 1",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-03-4",
+          "input": "6\n-10 -5 0 5 10 15\n4\n-20 0 7 20",
+          "expectedOutput": "0 2 4 6",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-03-5",
+          "input": "5\n1000000000 1000000000 1000000000 1000000000 1000000000\n2\n500000000 1000000001",
+          "expectedOutput": "0 5",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    },
+    {
+      "id": "q-04",
+      "slug": "valid-nested-delimiters",
+      "title": "Syntax Validator: Balanced Nested Delimiters",
+      "difficulty": "Medium",
+      "category": "Stacks & Parsing",
+      "points": 200,
+      "timeLimitMs": 2500,
+      "allocatedTimeMinutes": 15,
+      "memoryLimitMb": 128,
+      "description": "Given a string containing only brackets `()`, `{}`, `[]`, determine if the input string is valid.",
+      "inputFormat": "T\nT lines of bracket strings",
+      "outputFormat": "T lines: VALID or INVALID",
+      "constraints": [
+        "1 <= T <= 1000",
+        "1 <= length of each string <= 10^4"
+      ],
+      "status": "published",
+      "order": 4,
+      "starterCode": {
+        "python": "import sys\n\ndef is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n\n    for char in s:\n        if char in mapping:\n            top = stack.pop() # BUG: crashes if stack empty\n            if mapping[char] != top:\n                return False\n        else:\n            stack.append(char)\n    return True # BUG: ignores unpopped brackets\n\ndef solve():\n    lines = sys.stdin.read().split()\n    if not lines:\n        return\n    t = int(lines[0])\n    for i in range(1, t + 1):\n        print(\"VALID\" if is_valid(lines[i]) else \"INVALID\")\n\nif __name__ == '__main__':\n    solve()\n",
+        "c": "#include <stdio.h>\n#include <string.h>\n#include <stdbool.h>\nbool is_valid(const char *s) { char stack[10005]; int top = -1; for (int i = 0; s[i] != '\\0'; i++) { char c = s[i]; if (c == '(' || c == '{' || c == '[') { stack[++top] = c; } else { char match = stack[top--]; if ((c == ')' && match != '(') || (c == '}' && match != '{') || (c == ']' && match != '[')) return false; } } return true; } int main() { int t; if (scanf(\"%d\", &t) != 1) return 0; char s[10005]; while (t--) { scanf(\"%s\", s); printf(\"%s\\n\", is_valid(s) ? \"VALID\" : \"INVALID\"); } return 0; }",
+        "cpp": "#include <iostream>\n#include <stack>\n#include <string>\nusing namespace std;\nbool isValid(const string& s) { stack<char> st; for (char c : s) { if (c == '(' || c == '{' || c == '[') st.push(c); else { char top = st.top(); st.pop(); if ((c == ')' && top != '(') || (c == '}' && top != '{') || (c == ']' && top != '[')) return false; } } return true; } int main() { int t; if (!(cin >> t)) return 0; while (t--) { string s; cin >> s; cout << (isValid(s) ? \"VALID\" : \"INVALID\") << \"\\n\"; } return 0; }",
+        "java": "import java.util.*;\npublic class Solution { static boolean isValid(String s) { Deque<Character> stack = new ArrayDeque<>(); for (char c : s.toCharArray()) { if (c == '(' || c == '{' || c == '[') stack.push(c); else { char top = stack.pop(); if ((c == ')' && top != '(') || (c == '}' && top != '{') || (c == ']' && top != '[')) return false; } } return true; } public static void main(String[] args) { Scanner sc = new Scanner(System.in); if (!sc.hasNextInt()) return; int t = sc.nextInt(); while (t-- > 0) { System.out.println(isValid(sc.next()) ? \"VALID\" : \"INVALID\"); } } }"
+      },
+      "solutionCode": {
+        "python": "import sys\ndef is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            if not stack or stack.pop() != mapping[char]:\n                return False\n        else:\n            stack.append(char)\n    return len(stack) == 0\ndef solve():\n    lines = sys.stdin.read().split()\n    if not lines:\n        return\n    t = int(lines[0])\n    for i in range(1, t + 1):\n        print(\"VALID\" if is_valid(lines[i]) else \"INVALID\")\nif __name__ == '__main__':\n    solve()"
+      },
+      "testCases": [
+        {
+          "id": "tc-04-1",
+          "input": "3\n()\n()[]{}\n(]",
+          "expectedOutput": "VALID\nVALID\nINVALID",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-04-2",
+          "input": "2\n([)]\n{[]}",
+          "expectedOutput": "INVALID\nVALID",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-04-3",
+          "input": "3\n)\n((\n))",
+          "expectedOutput": "INVALID\nINVALID\nINVALID",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-04-4",
+          "input": "2\n{[()()]}\n{[(])}",
+          "expectedOutput": "VALID\nINVALID",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-04-5",
+          "input": "1\n(((((((((())))))))))",
+          "expectedOutput": "VALID",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    },
+    {
+      "id": "q-05",
+      "slug": "longest-palindromic-span",
+      "title": "Longest Palindromic Span Debugger",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming & Two Pointers",
+      "points": 300,
+      "timeLimitMs": 3000,
+      "allocatedTimeMinutes": 20,
+      "memoryLimitMb": 128,
+      "description": "Given a string `S`, return the length of the longest palindromic contiguous substring in `S`.",
+      "inputFormat": "A single line string S",
+      "outputFormat": "Single integer length",
+      "constraints": [
+        "1 <= |S| <= 2000",
+        "S consists of lowercase English letters only."
+      ],
+      "status": "published",
+      "order": 5,
+      "starterCode": {
+        "python": "import sys\ndef solve():\n    s = sys.stdin.read().strip()\n    if not s:\n        print(0)\n        return\n    n = len(s)\n    max_len = 1\n    for i in range(n):\n        l, r = i, i\n        while l >= 0 and r < n and s[l] == s[r]:\n            max_len = max(max_len, r - l + 1)\n            l -= 1\n            r += 1\n    print(max_len)\nif __name__ == '__main__':\n    solve()",
+        "c": "#include <stdio.h>\n#include <string.h>\nint main() { char s[2005]; if (scanf(\"%s\", s) != 1) return 0; int n = strlen(s), max_len = 1; for (int i = 0; i < n; i++) { int l = i, r = i; while (l >= 0 && r < n && s[l] == s[r]) { int len = r - l + 1; if (len > max_len) max_len = len; l--; r++; } } printf(\"%d\\n\", max_len); return 0; }",
+        "cpp": "#include <iostream>\n#include <string>\nusing namespace std;\nint main() { string s; if (!(cin >> s)) return 0; int n = s.size(), max_len = 1; for (int i = 0; i < n; i++) { int l = i, r = i; while (l >= 0 && r < n && s[l] == s[r]) { max_len = max(max_len, r - l + 1); l--; r++; } } cout << max_len << \"\\n\"; return 0; }",
+        "java": "import java.util.*;\npublic class Solution { public static void main(String[] args) { Scanner sc = new Scanner(System.in); if (!sc.hasNext()) return; String s = sc.next(); int n = s.length(), maxLen = 1; for (int i = 0; i < n; i++) { int l = i, r = i; while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)) { maxLen = Math.max(maxLen, r - l + 1); l--; r++; } } System.out.println(maxLen); } }"
+      },
+      "solutionCode": {
+        "python": "import sys\ndef solve():\n    s = sys.stdin.read().strip()\n    if not s:\n        print(0)\n        return\n    n = len(s)\n    def expand(l, r):\n        while l >= 0 and r < n and s[l] == s[r]:\n            l -= 1\n            r += 1\n        return r - l - 1\n    max_len = 1\n    for i in range(n):\n        max_len = max(max_len, expand(i, i), expand(i, i + 1))\n    print(max_len)\nif __name__ == '__main__':\n    solve()"
+      },
+      "testCases": [
+        {
+          "id": "tc-05-1",
+          "input": "babad",
+          "expectedOutput": "3",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-05-2",
+          "input": "cbbd",
+          "expectedOutput": "2",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-05-3",
+          "input": "a",
+          "expectedOutput": "1",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-05-4",
+          "input": "racecar",
+          "expectedOutput": "7",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-05-5",
+          "input": "noonnoon",
+          "expectedOutput": "8",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    },
+    {
+      "id": "q-06",
+      "slug": "prime-factor-gcd-accelerator",
+      "title": "Prime Factorization & GCD Accelerator",
+      "difficulty": "Hard",
+      "category": "Number Theory",
+      "points": 300,
+      "timeLimitMs": 2000,
+      "allocatedTimeMinutes": 20,
+      "memoryLimitMb": 128,
+      "description": "Given two positive 64-bit integers `A` and `B`, find the **Greatest Common Divisor (GCD)** of `A` and `B`, and print the **sum of distinct prime factors** of that GCD.",
+      "inputFormat": "A B",
+      "outputFormat": "GCD Sum_Of_Distinct_Primes",
+      "constraints": [
+        "1 <= A, B <= 10^12"
+      ],
+      "status": "published",
+      "order": 6,
+      "starterCode": {
+        "python": "import sys, math\ndef sum_distinct_primes(n):\n    if n <= 1: return 0\n    total = 0\n    d = 2\n    while d * d <= n:\n        if n % d == 0:\n            total += d\n            while n % d == 0: n //= d\n        d += 1\n    return total\ndef solve():\n    d = sys.stdin.read().split()\n    if len(d) < 2: return\n    a, b = int(d[0]), int(d[1])\n    g = math.gcd(a, b)\n    print(f\"{g} {sum_distinct_primes(g)}\")\nif __name__ == '__main__': solve()",
+        "c": "#include <stdio.h>\nlong long gcd(long long a, long long b) { while (b) { long long t = b; b = a % b; a = t; } return a; }\nlong long sum_distinct_primes(long long n) { if (n <= 1) return 0; long long total = 0; for (long long d = 2; d * d <= n; d++) { if (n % d == 0) { total += d; while (n % d == 0) n /= d; } } return total; }\nint main() { long long a, b; if (scanf(\"%lld %lld\", &a, &b) != 2) return 0; long long g = gcd(a, b); printf(\"%lld %lld\\n\", g, sum_distinct_primes(g)); return 0; }",
+        "cpp": "#include <iostream>\n#include <numeric>\nusing namespace std;\nlong long sum_distinct_primes(long long n) { if (n <= 1) return 0; long long total = 0; for (long long d = 2; d * d <= n; d++) { if (n % d == 0) { total += d; while (n % d == 0) n /= d; } } return total; }\nint main() { long long a, b; if (!(cin >> a >> b)) return 0; long long g = std::gcd(a, b); cout << g << \" \" << sum_distinct_primes(g) << \"\\n\"; return 0; }",
+        "java": "import java.util.*;\npublic class Solution { static long gcd(long a, long b) { while (b != 0) { long t = b; b = a % b; a = t; } return a; } static long sumDistinctPrimes(long n) { if (n <= 1) return 0; long total = 0; for (long d = 2; d * d <= n; d++) { if (n % d == 0) { total += d; while (n % d == 0) n /= d; } } return total; } public static void main(String[] args) { Scanner sc = new Scanner(System.in); if (!sc.hasNextLong()) return; long a = sc.nextLong(), b = sc.nextLong(); long g = gcd(a, b); System.out.println(g + \" \" + sumDistinctPrimes(g)); } }"
+      },
+      "solutionCode": {
+        "python": "import sys, math\ndef solve():\n    d = sys.stdin.read().split()\n    if len(d) < 2: return\n    a, b = int(d[0]), int(d[1])\n    g = math.gcd(a, b)\n    if g <= 1: print(f\"{g} 0\"); return\n    n, total, d = g, 0, 2\n    while d * d <= n:\n        if n % d == 0:\n            total += d\n            while n % d == 0: n //= d\n        d += 1\n    if n > 1: total += n\n    print(f\"{g} {total}\")\nif __name__ == '__main__': solve()"
+      },
+      "testCases": [
+        {
+          "id": "tc-06-1",
+          "input": "60 90",
+          "expectedOutput": "30 10",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-06-2",
+          "input": "17 31",
+          "expectedOutput": "1 0",
+          "isPrivate": false
+        },
+        {
+          "id": "tc-06-3",
+          "input": "100 100",
+          "expectedOutput": "100 7",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-06-4",
+          "input": "999999999998 499999999999",
+          "expectedOutput": "499999999999 499999999999",
+          "isPrivate": true
+        },
+        {
+          "id": "tc-06-5",
+          "input": "1000000000000 1000000000",
+          "expectedOutput": "1000000000 7",
+          "isPrivate": true
+        }
+      ],
+      "createdAt": "2026-10-22T03:49:02.871Z",
+      "updatedAt": "2026-10-22T03:49:02.871Z"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "sub-38d17e5b",
+      "competitionId": "comp-spring-2026",
+      "userId": "usr-admin-blackdragon",
+      "username": "BLACKDRAGON",
+      "userDisplayName": "Grandmaster Administrator (BLACKDRAGON)",
+      "questionId": "q-02",
+      "questionTitle": "String Inversion with Case Flipping",
+      "language": "python",
+      "code": "import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n",
+      "verdict": "COMPILATION_ERROR",
+      "score": 0,
+      "totalPoints": 100,
+      "passedTestCases": 0,
+      "totalTestCases": 5,
+      "executionTimeMs": 0,
+      "results": [
+        {
+          "testCaseIndex": 0,
+          "status": "COMPILATION_ERROR",
+          "executionTimeMs": 0,
+          "input": "HelloWorld",
+          "expectedOutput": "DLROwOLLEh",
+          "error": "  File \"solution.py\", line 1\n    import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n\n               ^\nSyntaxError: unexpected character after line continuation character\n",
+          "isPrivate": false
+        },
+        {
+          "testCaseIndex": 1,
+          "status": "COMPILATION_ERROR",
+          "executionTimeMs": 0,
+          "input": "CodeBattle 2026!",
+          "expectedOutput": "!6202 ELTTAbeDOc",
+          "error": "  File \"solution.py\", line 1\n    import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n\n               ^\nSyntaxError: unexpected character after line continuation character\n",
+          "isPrivate": false
+        },
+        {
+          "testCaseIndex": 2,
+          "status": "COMPILATION_ERROR",
+          "executionTimeMs": 0,
+          "error": "  File \"solution.py\", line 1\n    import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n\n               ^\nSyntaxError: unexpected character after line continuation character\n",
+          "isPrivate": true
+        },
+        {
+          "testCaseIndex": 3,
+          "status": "COMPILATION_ERROR",
+          "executionTimeMs": 0,
+          "error": "  File \"solution.py\", line 1\n    import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n\n               ^\nSyntaxError: unexpected character after line continuation character\n",
+          "isPrivate": true
+        },
+        {
+          "testCaseIndex": 4,
+          "status": "COMPILATION_ERROR",
+          "executionTimeMs": 0,
+          "error": "  File \"solution.py\", line 1\n    import sys\\n\\ndef solve():\\n    line = sys.stdin.read().rstrip('\\r\\n')\\n    if not line:\\n        return\\n    result = line[::-1]\\n    print(result.swapcase())\\n\\nif __name__ == '__main__':\\n    solve()\\n\n               ^\nSyntaxError: unexpected character after line continuation character\n",
+          "isPrivate": true
+        }
+      ],
+      "submittedAt": "2026-10-22T04:20:01.462Z",
+      "competitionMinute": 6
+    },
+    {
+      "id": "sub-a4190148",
+      "competitionId": "comp-spring-2026",
+      "userId": "usr-admin-blackdragon",
+      "username": "BLACKDRAGON",
+      "userDisplayName": "Grandmaster Administrator (BLACKDRAGON)",
+      "questionId": "q-02",
+      "questionTitle": "String Inversion with Case Flipping",
+      "language": "python",
+      "code": "import sys\n\ndef solve():\n    line = sys.stdin.read().rstrip(\"\\r\\n\")\n    if not line:\n        return\n    print(line[::-1].swapcase())\n\nif __name__ == \"__main__\":\n    solve()",
+      "verdict": "WRONG_ANSWER",
+      "score": 80,
+      "totalPoints": 100,
+      "passedTestCases": 4,
+      "totalTestCases": 5,
+      "executionTimeMs": 121,
+      "results": [
+        {
+          "testCaseIndex": 0,
+          "status": "ACCEPTED",
+          "executionTimeMs": 28,
+          "input": "HelloWorld",
+          "expectedOutput": "DLROwOLLEh",
+          "actualOutput": "DLROwOLLEh\n",
+          "isPrivate": false
+        },
+        {
+          "testCaseIndex": 1,
+          "status": "WRONG_ANSWER",
+          "executionTimeMs": 24,
+          "input": "CodeBattle 2026!",
+          "expectedOutput": "!6202 ELTTAbeDOc",
+          "actualOutput": "!6202 ELTTAbEDOc\n",
+          "isPrivate": false
+        },
+        {
+          "testCaseIndex": 2,
+          "status": "ACCEPTED",
+          "executionTimeMs": 25,
+          "isPrivate": true
+        },
+        {
+          "testCaseIndex": 3,
+          "status": "ACCEPTED",
+          "executionTimeMs": 22,
+          "isPrivate": true
+        },
+        {
+          "testCaseIndex": 4,
+          "status": "ACCEPTED",
+          "executionTimeMs": 22,
+          "isPrivate": true
+        }
+      ],
+      "submittedAt": "2026-10-22T04:20:36.538Z",
+      "competitionMinute": 7
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Code Battle - Online Competitive Programming Platform",
+  "description": "Browser-based competitive coding and debugging arena with real-time compilation, multi-language execution (C, C++, Java, Python), live leaderboards, and comprehensive administrator dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
